@@ -1,0 +1,22 @@
+#! /usr/bin/python3
+
+import dummysocks, sys, asyncio
+
+try:
+  assert len(sys.argv) == 2, 'exactly one argument required'
+  port = int(sys.argv[1])
+except Exception as e:
+  sys.exit('usage: dummysocks port\nerror: {}'.format(e))
+
+print('initializing dummysocks on port', port)
+
+try:
+  loop = asyncio.get_event_loop()
+  coro = asyncio.start_server(dummysocks.socksfwd, port=port, loop=loop)
+  server = loop.run_until_complete(coro)
+except Exception as e:
+  sys.exit('error: {}'.format(e))
+
+print( 'server active' )
+
+loop.run_forever()

@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-import sys, asyncio
+import asyncio
 
 
 async def copy_stream( id, reader, writer, bufsize=1<<16 ):
@@ -84,30 +84,3 @@ async def socksfwd( reader, writer ):
 
   asyncio.ensure_future( copy_stream( '{}:{} <-'.format(host,port), reader, remote_writer ) )
   asyncio.ensure_future( copy_stream( '{}:{} ->'.format(host,port), remote_reader, writer ) )
-
-  
-def main( *args ):
-  '''parse arguments and start proxy server'''
-
-  if len(args) != 1:
-    sys.exit( 'usage: dummysocks port' )
-
-  try:
-    port = int(args[0])
-  except ValueError:
-    sys.exit( 'invalid port {!r}'.format(args[0]) )
-
-  print( 'initializing dummysocks on port {}'.format(port), end='...', flush=True )
-  try:
-    loop = asyncio.get_event_loop()
-    coro = asyncio.start_server( socksfwd, port=port, loop=loop )
-    server = loop.run_until_complete( coro )
-  except Exception as e:
-    sys.exit( 'error: {}'.format(e) )
-
-  print( 'OK' )
-  loop.run_forever()
-
-
-if __name__ == '__main__':
-  main( *sys.argv[1:] )

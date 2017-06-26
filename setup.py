@@ -6,5 +6,6 @@ setuptools.setup(
   name='dummysocks',
   version='0.9',
   author='Gertjan van Zwieten',
-  scripts=['bin/dummysocks'],
+  py_modules=['dummysocks'],
+  scripts=['dummysocks'],
 )
