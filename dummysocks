@@ -17,6 +17,6 @@ try:
 except Exception as e:
   sys.exit('error: {}'.format(e))
 
-print( 'server active' )
+print('server active')
 
 loop.run_forever()
